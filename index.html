@@ -45,6 +45,19 @@
 
         map.fitBounds(layer.getBounds());
       });
+    // Legend goes here
+var legend = L.control({position: 'bottomright'});
+legend.onAdd = function (map) {
+  var div = L.DomUtil.create('div', 'legend');
+  div.innerHTML = `
+    <strong>CIscoreP Classification</strong><br>
+    <i style="background: grey"></i> &lt; 75<br>
+    <i style="background: red"></i> &gt; 75
+  `;
+  return div;
+};
+
+legend.addTo(map);
   </script>
 </body>
 </html>
