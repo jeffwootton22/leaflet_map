@@ -19,6 +19,19 @@
       maxZoom: 19,
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
+    // 🌟 Create an intro popup
+var introPopup = L.popup()
+  .setLatLng(map.getCenter())
+  .setContent(`
+    <h3>Homeless Encampments and CalEnviroScreen Scores</h3>
+    <p>This map displays homeless encampments overlaid with CalEnviroScreen classifications:</p>
+    <ul>
+      <li><strong>Red areas:</strong> CalEnviroScreen score &gt; 75 (higher environmental and health burden)</li>
+      <li><strong>Grey areas:</strong> CalEnviroScreen score &lt; 75 (lower burden)</li>
+    </ul>
+    <p>Click on a census tract to view detailed attributes.</p>
+  `)
+  .openOn(map);
     // Add your GeoJSON layer
     fetch('calenviro_binary.geojson')
       .then(response => response.json())
