@@ -20,7 +20,7 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
     // Add your GeoJSON layer
-    fetch('enviro_web.geojson')
+    fetch('calenviro_binary.geojson')
       .then(response => response.json())
       .then(data => {
         const layer = L.geoJSON(data, {
@@ -33,14 +33,16 @@
               layer.bindPopup(popupContent);
             }
           },
-          style: {
-            color: 'blue',
-            weight: 1,
-            fillOpacity: 0.5
+          style: function (feature) {
+            const bin = feature.properties.BinaryBin;
+            return {
+              color: bin === 1 ? 'grey' : 'red',
+              weight: 1,
+              fillOpacity: 0.5
+            };
           }
         }).addTo(map);
 
-        // Auto-zoom to fit all features
         map.fitBounds(layer.getBounds());
       });
   </script>
