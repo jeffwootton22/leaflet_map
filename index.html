@@ -58,14 +58,17 @@ var introPopup = L.popup()
 
         map.fitBounds(layer.getBounds());
       });
-    // Legend goes here
+    // Legend 
 var legend = L.control({position: 'bottomright'});
+
 legend.onAdd = function (map) {
   var div = L.DomUtil.create('div', 'legend');
   div.innerHTML = `
-    <strong>CIscoreP Classification</strong><br>
-    <i style="background: grey"></i> &lt; 75<br>
-    <i style="background: red"></i> &gt; 75
+    <div style="background: white; padding: 8px 12px; border-radius: 5px; box-shadow: 0 0 15px rgba(0,0,0,0.2);">
+      <strong>CalEnviroScreen Scores</strong><br>
+      <i style="background: grey; width: 14px; height: 14px; display: inline-block; margin-right: 6px;"></i> &lt; 75<br>
+      <i style="background: red; width: 14px; height: 14px; display: inline-block; margin-right: 6px;"></i> &gt; 75
+    </div>
   `;
   return div;
 };
