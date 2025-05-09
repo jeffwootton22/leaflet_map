@@ -22,7 +22,7 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // 🌟 Intro popup
+    // intro popup
     var introPopup = L.popup()
       .setLatLng(map.getCenter())
       .setContent(`
@@ -64,7 +64,7 @@
         map.fitBounds(layer.getBounds());
       });
 
-    // Load study_sites point layer with teardrop icons
+    // Load study_sites point layer 
 fetch('study_sites.geojson')
   .then(response => response.json())
   .then(data => {
