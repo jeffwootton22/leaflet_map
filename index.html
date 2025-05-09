@@ -15,24 +15,28 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     var map = L.map('map').setView([37.3382, -121.8863], 13);
+
+    // Add basemap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
-    // 🌟 Create an intro popup
-var introPopup = L.popup()
-  .setLatLng(map.getCenter())
-  .setContent(`
-    <h3>Homeless Encampments and CalEnviroScreen Scores</h3>
-    <p>This map displays homeless encampments overlaid with CalEnviroScreen classifications:</p>
-    <ul>
-      <li><strong>Red areas:</strong> CalEnviroScreen score &gt; 75 (higher environmental and health burden)</li>
-      <li><strong>Grey areas:</strong> CalEnviroScreen score &lt; 75 (lower burden)</li>
-    </ul>
-    <p>Click on a census tract to view detailed attributes.</p>
-  `)
-  .openOn(map);
-    // Add your GeoJSON layer
+
+    // 🌟 Intro popup
+    var introPopup = L.popup()
+      .setLatLng(map.getCenter())
+      .setContent(`
+        <h3>Homeless Encampments and CalEnviroScreen Scores</h3>
+        <p>This map displays homeless encampments overlaid with CalEnviroScreen classifications:</p>
+        <ul>
+          <li><strong>Red areas:</strong> CalEnviroScreen score &gt; 75 (higher environmental and health burden)</li>
+          <li><strong>Grey areas:</strong> CalEnviroScreen score &lt; 75 (lower burden)</li>
+        </ul>
+        <p>Click on a census tract to view detailed attributes.</p>
+      `)
+      .openOn(map);
+
+    // Load CalEnviroScreen polygons
     fetch('calenviro_binary.geojson')
       .then(response => response.json())
       .then(data => {
@@ -56,10 +60,11 @@ var introPopup = L.popup()
           }
         }).addTo(map);
 
+        // Zoom to CalEnviroScreen layer
         map.fitBounds(layer.getBounds());
       });
-    
-    // study site layer
+
+    // Load study_sites point layer
     fetch('study_sites.geojson')
       .then(response => response.json())
       .then(data => {
@@ -86,20 +91,27 @@ var introPopup = L.popup()
         }).addTo(map);
       });
 
-    // Legend 
-var legend = L.control({position: 'bottomright'});
+    // Add legend
+    var legend = L.control({position: 'bottomright'});
 
-legend.onAdd = function (map) {
-  var div = L.DomUtil.create('div', 'legend');
-  div.innerHTML = `
-    <div style="background: white; padding: 8px 12px; border-radius: 5px; box-shadow: 0 0 15px rgba(0,0,0,0.2);">
-      <strong>CalEnviroScreen Scores</strong><br>
-      <i style="background: grey; width: 14px; height: 14px; display: inline-block; margin-right: 6px;"></i> &lt; 75<br>
-      <i style="background: red; width: 14px; height: 14px; display: inline-block; margin-right: 6px;"></i> &gt; 75
-    </div>
-  `;
-  return div;
-};
+    legend.onAdd = function (map) {
+      var div = L.DomUtil.create('div', 'legend');
+      div.innerHTML = `
+        <div style="background: white; padding: 8px 12px; border-radius: 5px; box-shadow: 0 0 15px rgba(0,0,0,0.2); font-size: 14px;">
+          <strong>CalEnviroScreen Scores</strong><br>
+          <i style="background: grey; width: 14px; height: 14px; display: inline-block; margin-right: 6px;"></i> &lt; 75<br>
+          <i style="background: red; width: 14px; height: 14px; display: inline-block; margin-right: 6px;"></i> &gt; 75<br>
+          <i style="background: #007cbf; width: 14px; height: 14px; display: inline-block; margin-right: 6px; border-radius: 50%;"></i> Study Sites
+        </div>
+      `;
+      return div;
+    };
+
+    legend.addTo(map);
+  </script>
+</body>
+</html>
+
 
 legend.addTo(map);
   </script>
