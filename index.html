@@ -58,6 +58,36 @@ var introPopup = L.popup()
 
         map.fitBounds(layer.getBounds());
       });
+            map.fitBounds(layer.getBounds());
+      });
+
+    // study site layer
+    fetch('study_sites.geojson')
+      .then(response => response.json())
+      .then(data => {
+        L.geoJSON(data, {
+          pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, {
+              radius: 6,
+              fillColor: '#007cbf',
+              color: '#000',
+              weight: 1,
+              opacity: 1,
+              fillOpacity: 0.8
+            });
+          },
+          onEachFeature: function (feature, layer) {
+            if (feature.properties) {
+              let popupContent = '';
+              for (const key in feature.properties) {
+                popupContent += `<strong>${key}</strong>: ${feature.properties[key]}<br>`;
+              }
+              layer.bindPopup(popupContent);
+            }
+          }
+        }).addTo(map);
+      });
+
     // Legend 
 var legend = L.control({position: 'bottomright'});
 
