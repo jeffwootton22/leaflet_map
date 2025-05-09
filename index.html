@@ -58,9 +58,7 @@ var introPopup = L.popup()
 
         map.fitBounds(layer.getBounds());
       });
-            map.fitBounds(layer.getBounds());
-      });
-
+    
     // study site layer
     fetch('study_sites.geojson')
       .then(response => response.json())
